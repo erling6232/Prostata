@@ -1,0 +1,36 @@
+# Include the README
+include *.rst
+include *.md
+include *.bib
+
+# Include the license file
+include LICENSE.txt
+
+# Include version file
+include VERSION.txt
+
+# Do not distribute test data
+include data
+include data/text.txt
+include data/tree/file0
+include data/tree/file1
+include data/tree/file2
+recursive-include data *.json
+recursive-include data *.zip
+recursive-include data *.nii.gz
+# prune data
+prune .idea
+prune devtests
+include docs
+prune docs/_build
+recursive-include docs *
+recursive-include tests *.py
+
+# include *.py
+include *.yaml
+include Makefile
+include tox.ini
+exclude .coveragerc
+include pylintrc
+recursive-include imagedata *.py
+exclude load_data.py
