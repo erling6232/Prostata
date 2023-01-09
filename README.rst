@@ -1,6 +1,6 @@
-#########
-Prostata
-#########
+#############
+Auto-prostate
+#############
 
 |coverage|
 |Docs Badge|
@@ -8,32 +8,32 @@ Prostata
 |pypi| |pyversions| |downloads| |buildstatus|
 
 
-Prostata is a python project to build prostate pipeline analysing MR prostate studies.
+Auto-prostate is a python project to build prostate pipeline analysing MR prostate studies.
 
 
 
-.. |Docs Badge| image:: https://readthedocs.org/projects/prostata/badge/
+.. |Docs Badge| image:: https://readthedocs.org/projects/auto-prostate/badge/
     :alt: Documentation Status
     :scale: 100%
-    :target: https://prostata.readthedocs.io
+    :target: https://auto-prostate.readthedocs.io
 
-.. |buildstatus| image:: https://github.com/erling6232/prostata/actions/workflows/ci.yml/badge.svg
-    :target: https://github.com/erling6232/prostata/actions?query=branch%3Amaster
+.. |buildstatus| image:: https://github.com/erling6232/auto-prostate/actions/workflows/ci.yml/badge.svg
+    :target: https://github.com/erling6232/auto-prostate/actions?query=branch%3Amaster
     :alt: Build Status
 
-.. _buildstatus: https://github.com/erling6232/prostata/actions
+.. _buildstatus: https://github.com/erling6232/auto-prostate/actions
 
-.. |coverage| image:: https://codecov.io/gh/erling6232/prostata/branch/master/graph/badge.svg?token=GT9KZV2TWT
+.. |coverage| image:: https://codecov.io/gh/erling6232/auto-prostate/branch/master/graph/badge.svg?token=GT9KZV2TWT
     :alt: Coverage
-    :target: https://codecov.io/gh/erling6232/prostata
+    :target: https://codecov.io/gh/erling6232/auto-prostate
 
-.. |pypi| image:: https://img.shields.io/pypi/v/prostata.svg
-    :target: https://pypi.python.org/pypi/prostata
+.. |pypi| image:: https://img.shields.io/pypi/v/auto-prostate.svg
+    :target: https://pypi.python.org/pypi/auto-prostate
     :alt: PyPI Version
 
-.. |pyversions| image:: https://img.shields.io/pypi/pyversions/prostata.svg
-   :target: https://pypi.python.org/pypi/prostata/
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/auto-prostate.svg
+   :target: https://pypi.python.org/pypi/auto-prostate/
    :alt: Supported Python Versions
 
-.. |downloads| image:: https://img.shields.io/pypi/dm/prostata?color=blue
+.. |downloads| image:: https://img.shields.io/pypi/dm/auto-prostate?color=blue
    :alt: PyPI Downloads
