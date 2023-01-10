@@ -10,6 +10,33 @@ Auto-prostate
 
 Auto-prostate is a python project to build prostate pipeline analysing MR prostate studies.
 
+Table
+~~~~~~
+
++------------+--------------------+
+| Column     | Description        |
++============+====================+
+| status     | status code        |
++------------+--------------------+
+| series     | series received    |
++------------+--------------------+
+| images     | images received    |
++------------+--------------------+
+
+Status codes
+~~~~~~~~~~~~
+
++-------------+---------------------------------+
+| Code        | Description                     |
++=============+=================================+
+| detected    | First images receive in PACS    |
++-------------+---------------------------------+
+| stable      | Stable number of images in PACS |
++-------------+---------------------------------+
+| cmoved      | Transfer from PACS initiated    |
++-------------+---------------------------------+
+
+
 
 
 .. |Docs Badge| image:: https://readthedocs.org/projects/auto-prostate/badge/
