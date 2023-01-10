@@ -10,18 +10,64 @@ Auto-prostate
 
 Auto-prostate is a python project to build prostate pipeline analysing MR prostate studies.
 
+Configuration file
+------------------
+
+.. code-block:: console
+
+    [pacs]
+    host=server.local
+    port=104
+    aet=PACS
+    studydescription="*Prostate*"
+
+    [store]
+    cmove=LOCALAET
+
+    [mysql]
+    database=
+    host=
+    user=
+    password=
+
+Programs
+--------
+
+scan-pacs
+~~~~~~~~~
+
+Scan the PACS system to detect newly arrived studies.
+* scan-pacs -c configfile
+
+Data store
+----------
+
 Table
 ~~~~~~
 
-+------------+--------------------+
-| Column     | Description        |
-+============+====================+
-| status     | status code        |
-+------------+--------------------+
-| series     | series received    |
-+------------+--------------------+
-| images     | images received    |
-+------------+--------------------+
++------------+---------------------------+----------+
+| Column     | Description               | Type     |
++============+===========================+==========+
+| stuinsuid  | Study Instance UID        | varchar  |
++------------+---------------------------+----------+
+| studyid    | Study ID                  | varchar  |
++------------+---------------------------+----------+
+| studydate  | Study Date                | varchar  |
++------------+---------------------------+----------+
+| studytime  | Study Time                | varchar  |
++------------+---------------------------+----------+
+| studydescr | Study Description         | varchar  |
++------------+---------------------------+----------+
+| bodypartex | Body Part Examined        | varchar  |
++------------+---------------------------+----------+
+| accno      | Accession Number          | varchar  |
++------------+---------------------------+----------+
+| status     | Status Code               | varchar  |
++------------+---------------------------+----------+
+| series     | No. of Series Received    | int      |
++------------+---------------------------+----------+
+| images     | No. of Images Received    | int      |
++------------+---------------------------+----------+
 
 Status codes
 ~~~~~~~~~~~~
