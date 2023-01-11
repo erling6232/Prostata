@@ -9,23 +9,23 @@ from mysql.connector import errorcode, Error
 TABLES = {}
 TABLES['studies'] = (
     "CREATE TABLE IF NOT EXISTS `studies` ("
-    "  `stuinsuid` varchar(14) NOT NULL,"
-    "  `studyid` varchar(14) NOT NULL,"
-    "  `studydate` varchar(14) NOT NULL,"
-    "  `studytime` varchar(14) NOT NULL,"
-    "  `studydescr` varchar(14) NOT NULL,"
-    "  `bodypartex` varchar(14) NOT NULL,"
-    "  `accno` varchar(14) NOT NULL,"
-    "  `status` varchar(14) NOT NULL,"
+    "  `stuinsuid` varchar(64) NOT NULL,"
+    "  `studyid` varchar(16) NOT NULL,"
+    "  `studydate` varchar(10) NOT NULL,"
+    "  `studytime` varchar(10) NOT NULL,"
+    "  `studydescr` varchar(64) NOT NULL,"
+    "  `bodypartex` varchar(16) NOT NULL,"
+    "  `accno` varchar(16) NOT NULL,"
+    "  `status` varchar(16) NOT NULL,"
     "  `series` int(11) NOT NULL,"
     "  `images` int(11) NOT NULL,"
     "  PRIMARY KEY (`stuinsuid`)"
     ") ENGINE=InnoDB")
-STUDIES_COLUMNS = "stuinsuid,studyid,studydate,studytime,studydescr,bodypartex"\
+STUDIES_COLUMNS = "stuinsuid,studyid,studydate,studytime,studydescr,bodypartex,"\
                   "accno,status,series,images"
 
 
-def connect(db_config):
+def db_connect(db_config):
     """Connect to database"""
 
     try:
@@ -42,26 +42,29 @@ def connect(db_config):
 def create_database(db_config):
     """Create database"""
 
+    database = db_config['database']
+    del db_config['database']
+
     cnx = mysql.connector.connect(**db_config)
     cursor = cnx.cursor()
     try:
         cursor.execute(
-            "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(db_config['database']))
+            "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(database))
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_DB_CREATE_EXISTS:
-            print("Database {} created successfully.".format(db_config['database']))
+            print("Database {} created successfully.".format(database))
         else:
             print("Failed creating database: {}".format(err))
             exit(1)
 
     try:
-        cursor.execute("USE {}".format(db_config['database']))
+        cursor.execute("USE {}".format(database))
     except mysql.connector.Error as err:
-        print("Database {} does not exists.".format(db_config['database']))
+        print("Database {} does not exists.".format(database))
         if err.errno == errorcode.ER_BAD_DB_ERROR:
             create_database(cursor)
-            print("Database {} created successfully.".format(db_config['database']))
-            cnx.database = db_config['database']
+            print("Database {} created successfully.".format(database))
+            cnx.database = database
         else:
             print(err)
             exit(1)
@@ -90,23 +93,22 @@ def get_db_record(cursor, studyInstanceUID):
         cursor
         studyInstanceUID
     Returns:
-        record (dict) - study record
+        record (dict) - study record, None if none is found
     Raises:
-        IndexError - when studyInstanceUID is not present
+        mysql.connector.Error
     """
 
     record = None
     try:
-        cursor.execute("SELECT {} FROM studies WHERE stuinsuid = {}".format(
+        cursor.execute("SELECT {} FROM studies WHERE stuinsuid = '{}'".format(
             STUDIES_COLUMNS, studyInstanceUID))
     except mysql.connector.Error:
-        raise IndexError('StudyInstanceUID {} not present'.format(
-            studyInstanceUID
-        ))
+        raise
     if cursor.rowcount > 0:
-        record = {}
-        for c, i in enumerate(STUDIES_COLUMNS.split(',')):
-            record[c] = cursor[0][i]
+        for row in cursor:
+            record = {}
+            for i, c in enumerate(STUDIES_COLUMNS.split(',')):
+                record[c] = row[i]
     return record
 
 
@@ -119,23 +121,26 @@ def set_db_record(db, cursor, record):
     try:
         # Verify whether studyInstanceUID already exists
         cursor.execute("SELECT stuinsuid FROM studies "
-                       "WHERE stuinsuid = {}".format(record['stuinsuid']))
-        if cursor.rowcount > 0:
+                       "WHERE stuinsuid = '{}'".format(record['stuinsuid']))
+        print('set_db_record: cursor.rowcount {}'.format(cursor.rowcount))
+        if cursor.rowcount < 1:
             # Set new record in database
-            cursor.execute("INSERT INTO studies ({}) "
-                           "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)".format(STUDIES_COLUMNS),
-                           args)
+            result = cursor.execute("INSERT INTO studies ({}) "
+                           "VALUES (%(stuinsuid)s,%(studyid)s,%(studydate)s,%(studytime)s"
+                           ",%(studydescr)s,%(bodypartex)s,%(accno)s,%(status)s,%(series)s"
+                           ",%(images)s)".format(STUDIES_COLUMNS),
+                           record)
             db.commit()
         else:
             # Update record in database
-            cursor.execute("UPDATE studies "
-                           "SET studyid=%s, studydate=%s, studytime=%s, "
-                           "studydescr=%s, bodypartex=%s, accno=%s, "
-                           "status=%s, series=%s, images=%s "
-                           "WHERE stuinsuid = {}".format(
-                               record['stuinsuid']
-                           ),
-                           args[1:])
+            result = cursor.execute("UPDATE studies "
+                           "SET studyid=%(studyid)s, "
+                           "studydate=%(studydate)s, studytime=%(studytime)s, "
+                           "studydescr=%(studydescr)s, bodypartex=%(bodypartex)s, "
+                           "accno=%(accno)s, "
+                           "status=%(status)s, series=%(series)s, images=%(images)s "
+                           "WHERE stuinsuid=%(stuinsuid)s",
+                           record)
             db.commit()
     except mysql.connector.Error:
         raise
