@@ -32,7 +32,7 @@ def connect(hostname, port, aet):
     return assoc
 
 
-def cfind_studies(assoc, patient_id, search_term):
+def cfind_studies(assoc, patient_id, date_range, search_term):
 
     # Create our Identifier (query) dataset
     ds = pydicom.dataset.Dataset()
@@ -42,9 +42,7 @@ def cfind_studies(assoc, patient_id, search_term):
     ds.PatientID = ''
     ds.BodyPartExamined = ''
     ds.StudyInstanceUID = ''
-    ds.StudyDate = '20230109'
-
-    # ds.StudyDate = ''
+    ds.StudyDate = date_range
     ds.StudyTime = ''
     ds.AccessionNumber = ''
     ds.NumberOfStudyRelatedSeries = ''

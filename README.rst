@@ -33,17 +33,25 @@ Configuration file
 Programs
 --------
 
+initialize-database
+~~~~~~~~~~~~~~~~~~~
+
+Initialize the database for auto-prostate.
+
+* initialize-database -c configfile
+
 scan-pacs
 ~~~~~~~~~
 
 Scan the PACS system to detect newly arrived studies.
+
 * scan-pacs -c configfile
 
 Data store
 ----------
 
-Table
-~~~~~~
+Table studies
+~~~~~~~~~~~~~
 
 +------------+---------------------------+----------+
 | Column     | Description               | Type     |
